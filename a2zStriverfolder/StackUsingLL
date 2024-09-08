@@ -1,4 +1,4 @@
-// Implement Stack using Linked List
+// Implement Stack using Linked List (GFG)
 
 class MyStack {
     // class StackNode {
