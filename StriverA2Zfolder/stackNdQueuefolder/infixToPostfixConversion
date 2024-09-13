@@ -1,0 +1,72 @@
+// Infix to Postfix (gfg) :
+
+class Solution {
+    // Function to convert an infix expression to a postfix expression.
+    public static String infixToPostfix(String exp) {
+        // Your code here
+        int i = 0;
+        Stack<Character> st = new Stack<>();
+        String ans = "";
+        
+        int n = exp.length();
+        
+        while(i < n){ 
+            // checking for an operand 
+            
+            if((exp.charAt(i) >= 'A' && exp.charAt(i) <= 'Z') || (exp.charAt(i) >= 'a' && exp.charAt(i) <= 'z') || (exp.charAt(i) >= '0' && exp.charAt(i) <= '9')){
+                ans = ans + exp.charAt(i); // add the operand to ans directly 
+                
+            }else if(exp.charAt(i) == '(' ){ // if it's a opening bracket add it to stack 
+            
+                st.push(exp.charAt(i));
+                
+            }else if(exp.charAt(i) == ')' ){ 
+                
+                // when it's a closing brace, pop all the elems from the st  and add them to ans
+                // except the opening brace & until we reach the open brace 
+                while(!st.isEmpty() && st.peek() != '('  ){
+                    
+                    ans += st.pop();
+        
+                }
+                
+                st.pop(); // pop the open brace at last 
+                
+            }else{ // its not an operand its an operator (^, *, /, +, -)
+            
+                while(!(st.isEmpty()) && priority(exp.charAt(i)) <= priority(st.peek()) ){
+                    
+                    // add high priority value from stack's top to ans 
+                    ans += st.peek(); 
+                    st.pop(); // then pop it out 
+
+                }
+                
+                // when the curr elem has high priority then push it to the stack
+                st.push(exp.charAt(i));
+                
+            }
+            i++; // increment the i for going to next char in string input 
+        }
+        
+        // at last if there r still elems in the stack then add em directly to the ans 
+        while(st.isEmpty() == false){
+            ans += st.peek();
+            st.pop(); // pop them from stack after adding them to ans 
+        }
+        return ans; // this will be postfix
+    }
+    
+    // priority function : 
+    static int priority(char c){
+        if(c == '^'){
+            return 3;
+        }else if(c == '*' || c == '/'){
+            return 2;
+        }else if(c == '+' || c == '-'){
+            return 1;
+        }
+        // if any other operator other than the above mentioned one's
+        return -1;
+    }
+}
