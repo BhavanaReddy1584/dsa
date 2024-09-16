@@ -1,0 +1,55 @@
+// lettcode 503 : Next Gretaer Element- 2 
+
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+
+
+       /*
+        // brute force (TC = O(N*N) ; SC = O(N))
+        int n = nums.length;
+        int ans[] = new int[n];
+
+        Arrays.fill(ans, -1); // first fill the ans array with -1
+
+        for(int i =0; i< n; i++){
+            for(int j =i+1; j< i+n; j++){
+                int ind = j%n; // gives us the hypothetical index  
+                if(nums[ind] > nums[i]){
+                    ans[i] = nums[ind];
+                    break;
+                }
+            }
+        }
+        return ans;                       */
+
+
+        // optimal approach : Tc = (O(2n+ 2n) = O(4n) ; SC = O(2n) + O(n))
+
+        int n = nums.length;
+        int[] ans = new int[n];
+        Stack<Integer> st = new Stack<>();
+
+        // Initialize all elements in the answer array to -1
+        Arrays.fill(ans, -1);
+
+        // Traverse the array twice (circular)
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            // Use modulo to simulate the circular behavior
+            while (!st.isEmpty() && st.peek() <= nums[i % n]) {
+                st.pop();  // Pop elements that are not useful
+            }
+            
+            // If this is the first pass (i < n), assign the next greater element
+            if (i < n) {
+                if (!st.isEmpty()) {
+                    ans[i] = st.peek();  // The top of the stack is the next greater element
+                }
+            }
+
+            // Push current element index into the stack for future elements
+            st.push(nums[i % n]);
+        }
+        
+        return ans;
+    }
+}
