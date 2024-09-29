@@ -1,0 +1,64 @@
+// GFG : https://www.geeksforgeeks.org/problems/fractional-knapsack-1587115620/
+
+
+// TC : O(n log n + n). O(n log n) to sort the items and O(n) to iterate through all the items for calculating the answer & SC : O(1) 
+class Solution {
+    double fractionalKnapsack(int w, Item arr[], int n) {
+        // Sort the items based on value-to-weight ratio in descending order
+        Arrays.sort(arr, new itemComparator()); 
+        int curWeight = 0; 
+        double finalvalue = 0.0; 
+        
+        // Loop through all the items after sorting
+        for (int i = 0; i < n; i++) {
+            // If adding the current item's weight does not exceed the knapsack capacity
+            if (curWeight + arr[i].weight <= w) {
+                // Add the current item's weight to the current total weight
+                curWeight += arr[i].weight;
+                
+                // Add the current item's full value to the final value
+                finalvalue += arr[i].value;
+            } 
+            // If adding the current item exceeds the knapsack's capacity
+            else {
+                // Calculate the remaining weight that can be filled in the knapsack
+                int remain = w - curWeight;
+                
+                // Add the fraction of the current item's value proportional to the remaining weight
+                finalvalue += ((double)arr[i].value / (double)arr[i].weight) * (double)remain;
+                
+                // As we have filled the knapsack, exit the loop
+                break;
+            }
+        }
+        // Return the final value, which is the maximum value that can be carried in the knapsack
+        return finalvalue;
+    }
+
+       
+    // Comparator class to compare items based on their value-to-weight ratio
+    class itemComparator implements Comparator<Item> {
+        // Overriding the compare method of Comparator interface
+        @Override
+        public int compare(Item a, Item b) {
+            // Calculate the value-to-weight ratio for the first item (a)
+            double r1 = (double)(a.value) / (double)(a.weight);
+        
+            // Calculate the value-to-weight ratio for the second item (b)
+            double r2 = (double)(b.value) / (double)(b.weight);
+        
+            // If the ratio of the first item is less than the second item,
+            // return 1, meaning 'b' should be placed before 'a' in sorted order.
+            if (r1 < r2) return 1;
+        
+            // If the ratio of the first item is greater than the second item,
+            // return -1, meaning 'a' should be placed before 'b'.
+            else if (r1 > r2) return -1;
+        
+            // If both items have the same ratio, return 0, meaning they are
+            // considered equal in terms of ordering.
+            else return 0;
+        }
+    }
+        
+}
