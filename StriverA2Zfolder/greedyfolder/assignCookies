@@ -1,1 +1,24 @@
+// LC : 455 - Assign Cookies
 
+// TC : O(N logN + M logM + M) => O(N logN + M logM) is for sorting and M is for the while loop & SC : O(1) 
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        int n = g.length;
+        int m = s.length;
+
+        Arrays.sort(g);
+        Arrays.sort(s);
+
+        int count= 0; 
+        int greedPointer = 0;
+        int cookiePointer = 0;
+        while(greedPointer < n && cookiePointer < m){
+            if(s[cookiePointer] >= g[greedPointer]){
+                greedPointer++;
+                count++;
+            }
+            cookiePointer++;
+        }
+        return count;
+    }
+}
