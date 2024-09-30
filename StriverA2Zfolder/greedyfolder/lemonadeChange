@@ -1,0 +1,48 @@
+// LC 860. Lemonade Change :
+
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int n = bills.length;
+        int numOf5 = 0;
+        int numOf10 = 0;
+
+        for(int i =0; i< n; i++){
+            if(bills[i] == 5){
+                numOf5++;
+            }else if(bills[i] == 10){
+                if(numOf5 > 0){
+                    numOf5--;
+                    numOf10++;
+                }else{
+                    return false;
+                }
+            }else{ // bills[i] == 20
+                if(numOf5 > 0 && numOf10 > 0){
+                    numOf5--;
+                    numOf10--;
+                }else if(numOf5 >= 3){
+                    numOf5 -= 3;
+                }else{
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+/* Approach: Simulation
+Intuition: 
+Customers can pay in three ways:
+
+5-dollar bill: Since each lemonade costs 5 dollars, no change is necessary. We simply add the 5-dollar bill to our collection.
+
+10-dollar bill: We need to provide 5 dollars in change. If we have a 5-dollar bill available, we give it to the customer and add the 10-dollar bill to our collection. If we lack a 5-dollar bill, the transaction fails and we can return false.
+
+20-dollar bill: We must provide 15 dollars in change. We can do this in two ways:
+
+Give one 10-dollar bill and one 5-dollar bill.
+Give three 5-dollar bills.
+To solve this problem, we'll iterate through the bills array and keep track of the available change we have at any given turn. This means tracking the number of 5-dollar and 10-dollar bills. Interestingly, we won't need to track the 20-dollar bills since they aren't needed to make change.
+
+Since the 5-dollar bill is required for both the 10-dollar and 20-dollar transactions and the 10-dollar bill can only be used in the 20-dollar transactions, we want to prioritize using the 10-dollar bill when possible.      */
