@@ -1,0 +1,73 @@
+// LeetCode : 678 = Valid Parenthesis String :
+
+/*
+// Brute force: recursive approach = TC: O(3*N) & SC: O(N)
+class Solution {
+    public boolean checkValidString(String s) {
+       return fun(s, 0, 0);
+    }
+
+    // recursive helper function
+    boolean fun(String s, int ind, int cnt){
+        // If cnt is negative, it means there are more closing ')' than opening '('
+        if(cnt < 0){
+            return false;
+        }
+
+        // When we reach the end of the string
+        int n = s.length();
+        if(ind == n){
+            return (cnt == 0); 
+        }
+
+        // Case 1: If current char is '(', increase cnt (more open parentheses)
+        if(s.charAt(ind) == '(' ){
+            return fun(s, ind+1, cnt+1);
+        }
+
+        // Case 2: If current char is ')', decrease cnt (close one parenthesis)
+        if(s.charAt(ind) == ')' ){
+            return fun(s, ind+1, cnt-1);
+        }
+
+        // case 3 : when * is the curr char & we assume it as '(' or ')' or ""
+        return fun(s, ind+1, cnt+1) || fun(s, ind+1, cnt-1) || fun(s, ind+1, cnt);
+    }
+}                               */
+
+// Optimal Approach : TC = O(n) and SC = O(1) 
+class Solution {
+    public boolean checkValidString(String s) {
+        int min = 0; // min possible open paranthesis range
+        int max = 0; // max possible open paranthesis
+
+        for(int i =0; i< s.length(); i++){
+            char c = s.charAt(i);
+
+            // when it's a  '(' 
+            if(c == '(' ){
+                min++;
+                max++;
+            }
+
+            // when it's a ')' 
+            else if(c == ')' ){
+                min--;
+                max--;
+            }else{ //when c =='*',possible min val range= 0, possible max value range = 1(dont take -1)
+                min--;
+                max++;
+            }
+
+            // If max is less than 0, indicates that there r too many closing parentheses
+            if (max < 0) {
+                return false;
+            }
+            // low shouldn't go below 0 (as we can't have negative open parentheses)
+            min = Math.max(min, 0);
+           
+        }
+        // s is valid when min possible '(' is equal to 0
+        return (min == 0);
+    }
+}
