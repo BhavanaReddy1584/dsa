@@ -1,0 +1,32 @@
+// GFG : N Meetings in one room 
+
+// TC : O(n * log n) and SC : O(n)
+
+class Solution {
+    // Function to find the maximum number of meetings that can
+    // be performed in a meeting room.
+    public int maxMeetings(int n, int start[], int end[]) {
+        // add your code here
+        int[][] meetings = new int[n][2];
+        // Populate the 2D array with start and end times
+        for(int i =0; i< n; i++){
+            meetings[i][0] = start[i]; // stores the start times of meetings
+            meetings[i][1] = end[i]; // stores the end times of meetings
+        }
+        
+        // Sort the meetings based on their end times
+        Arrays.sort(meetings, (m1, m2) -> m1[1] - m2[1]);// lambda expression for sorting  
+        
+        int count = 1; // coz there will be atleast 1 meeting thats gonna happen
+        int lastEndedTime = meetings[0][1]; // end time of meeting 1 
+        
+        for(int i =0; i< n; i++){
+            // if start time of next meeting is greater than the end time of prev meeting 
+            if(meetings[i][0] > lastEndedTime){
+                count++; 
+                lastEndedTime = meetings[i][1]; 
+            }
+        }
+        return count;
+    }
+}
