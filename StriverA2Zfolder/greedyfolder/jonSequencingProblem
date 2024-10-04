@@ -1,0 +1,52 @@
+// gfg : https://www.geeksforgeeks.org/problems/job-sequencing-problem-1587115620/1
+
+class Solution
+{
+    //Function to find the maximum profit and the number of jobs done.
+    int[] JobScheduling(Job arr[], int n)
+    {
+        // Your code here
+        Arrays.sort(arr, (a, b) -> (b.profit - a.profit));
+        // find out the max 
+        int max = 0;
+        for(int i =0; i< n; i++){
+            if(arr[i].deadline > max){
+                max = arr[i].deadline;
+            }
+        }
+        
+        int resArr[] = new int[max + 1];
+        Arrays.fill(resArr, -1);
+        
+        int cntJobs = 0;
+        int jobProfit = 0;
+        for(int i =0; i< n; i++){
+            // if the 1st elems deadLine is 6 we'll first check if the 6th day is empty or not
+            // if yes we'll fill that day with the job id else we'll check 5 nd so on
+            for(int j = arr[i].deadline; j > 0; j--){
+                if(resArr[j] == -1){ //when it's -1 wkt the day is not used yet  
+                    resArr[j] = i;
+                    cntJobs++;
+                    jobProfit += arr[i].profit;
+                    break;
+                }
+            }
+        }
+        
+        int ans[] = new int[2];
+        ans[0] = cntJobs;
+        ans[1] = jobProfit;
+        return ans;
+    }
+}
+
+/*
+
+class Job {
+    int id, profit, deadline;
+    Job(int x, int y, int z){
+        this.id = x;
+        this.deadline = y;
+        this.profit = z; 
+    }
+}              */
