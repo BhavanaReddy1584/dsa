@@ -20,7 +20,7 @@ class Solution {
         int count = 1; // coz there will be atleast 1 meeting thats gonna happen
         int lastEndedTime = meetings[0][1]; // end time of meeting 1 
         
-        for(int i =0; i< n; i++){
+        for(int i =1; i< n; i++){
             // if start time of next meeting is greater than the end time of prev meeting 
             if(meetings[i][0] > lastEndedTime){
                 count++; 
