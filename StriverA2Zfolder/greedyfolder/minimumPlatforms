@@ -1,0 +1,50 @@
+ // gfg : Minimum Platforms  : https://www.geeksforgeeks.org/problems/minimum-platforms-1587115620/1
+
+ class Solution {
+    // Function to find the minimum number of platforms required at the
+    // railway station such that no train waits.
+    static int findPlatform(int arr[], int dep[]) {
+        
+        /*
+        // brute : not working :
+        // add your code here
+        int n = arr.length;
+        int ans=1; //final value
+        for(int i=0;i<=n-1;i++){
+        int count=1; // count of overlapping interval of only this   iteration
+            for(int j=i+1;j<=n-1;j++){
+                if((arr[i]>=arr[j] && arr[i]<=dep[j]) ||
+                (arr[j]>=arr[i] && arr[j]<=dep[i])){
+                   count++;
+                }
+            }
+            ans=Math.max(ans,count); //updating the value
+        }
+        
+    return ans;           */
+
+    
+    // optimal : TC = O(2*(nlogn) + n) and SC = O(1)
+//if we shouldn't distort the arrays, then take a 3rd array,copy everything & follow the process
+        Arrays.sort(arr);
+        Arrays.sort(dep);
+        int platform_needed = 1; 
+        int result = 1;
+        int i =1, j= 0; // pointers for arrival and departure times
+            while(i < arr.length && j < arr.length){
+                if(arr[i] <= dep[j]){ // a train has arrived before another train's departure
+                    platform_needed++;
+                    i++;
+                }else if (arr[i] > dep[j]){ // a train has arrived after the departure of another 
+                    platform_needed--;
+                    j++;
+                }
+                
+                if(platform_needed > result){
+                    result = platform_needed;
+                }
+            }
+        return result;
+    }
+    
+}
