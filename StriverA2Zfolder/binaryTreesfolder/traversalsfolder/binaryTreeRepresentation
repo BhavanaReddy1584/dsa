@@ -1,4 +1,4 @@
-// gfg 
+// gfg : https://www.geeksforgeeks.org/problems/binary-tree-representation/0
 
 class Solution{
     public static void createTree(Node root0, ArrayList<Integer> v ){
