@@ -1,0 +1,82 @@
+// coding ninjas : https://www.naukri.com/code360/problems/tree-traversal_981269?interviewProblemRedirection=true&search=Tree&attempt_status=COMPLETED
+
+/*********************************************************
+
+ Following is the TreeNode structure:
+
+ class TreeNode {
+     int data;
+     TreeNode left;
+     TreeNode right;
+     TreeNode() {
+         this.data = 0;
+         this.left = null;
+         this.right = null;
+     }
+     TreeNode(int data) {
+         this.data = data;
+         this.left = null;
+         this.right = null;
+     }
+     TreeNode(int data, TreeNode left, TreeNode right) {
+         this.data = data;
+         this.left = left;
+         this.right = right;
+     }
+ };
+ ********************************************************/
+
+import java.util.List;
+import java.util.ArrayList;
+public class Solution {
+    public static List<List<Integer>> getTreeTraversal(TreeNode root) {
+        // Write your code here.
+        // Create lists for inorder, preorder, and postorder elements
+        List<Integer> inord = new ArrayList<>();
+        List<Integer> preord = new ArrayList<>();
+        List<Integer> postord = new ArrayList<>();
+        
+        // Helper recursive methods for traversal
+        inorder(root, inord);
+        preorder(root, preord);
+        postorder(root, postord);
+        
+        // Adding the results to the final answer list
+        List<List<Integer>> ans = new ArrayList<>();
+        ans.add(inord);
+        ans.add(preord);
+        ans.add(postord);
+        
+        return ans;
+    }
+    
+    // Recursive inorder traversal
+    private static void inorder(TreeNode root, List<Integer> inord) { // left, root, right
+        if (root == null) {
+            return;
+        }
+        inorder(root.left, inord);
+        inord.add(root.data);  // Add elements to inorder list
+        inorder(root.right, inord);
+    }
+    
+    // Recursive preorder traversal
+    private static void preorder(TreeNode root, List<Integer> preord) { // root, left, right
+        if (root == null) {
+            return;
+        }
+        preord.add(root.data);  // Add elements to preorder list
+        preorder(root.left, preord);
+        preorder(root.right, preord);
+    }
+    
+    // Recursive postorder traversal
+    private static void postorder(TreeNode root, List<Integer> postord) { // left, right, root
+        if (root == null) {
+            return;
+        }
+        postorder(root.left, postord);
+        postorder(root.right, postord);
+        postord.add(root.data);  // Add elements to postorder list
+    }
+}
