@@ -1,0 +1,104 @@
+// LC : 145
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+
+/*
+ // Recursive approach :
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) { // left, right, root
+        List<Integer> l = new ArrayList<>();
+        postOrderHelper(root, l);
+        return l; 
+    }
+    void postOrderHelper(TreeNode root, List<Integer> l){
+        if(root == null){
+            return;
+        }
+
+        postOrderHelper(root.left, l);
+        postOrderHelper(root.right, l);
+        l.add(root.val);
+    }
+}                                                */    
+
+
+/*
+// Iterative approach : using 2 stacks => TC : O(N) & SC : O(2*N) = 2 stacks
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) { // left, right, root
+        List<Integer> l = new ArrayList<>();
+        Stack<TreeNode> st1 = new Stack<>();
+        Stack<TreeNode> st2 = new Stack<>();
+        // Initially enter the root into the stack 1  
+        if(root == null){ // when the given tree is empty, then return empty list 
+            return l;
+        }
+        st1.push(root); // initially, push the root of the tree into st 1
+        while(!st1.isEmpty()){
+            root = st1.pop(); // pop the root from st1 & push it to st2 
+            st2.push(root);
+            if(root.left != null){ 
+                st1.push(root.left);
+            }
+            if(root.right != null){
+                st1.push(root.right);
+            }
+        }
+        // now st-2 will have all the elems in LIFO, add them to the list for answer
+        while(!st2.isEmpty()){
+            l.add(st2.pop().val);
+        }  
+    return l;
+    }
+}                                  */
+
+
+
+// Iterative Approach (using 1 stack) : 
+// [TC = O(2*n) = arraylist & O(n) = LL] and SC = O(n)
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) { // left, right, root
+        //List<Integer> l = new ArrayList<>(); // array list 
+        List<Integer> l = new LinkedList<>();
+        Stack<TreeNode> st1 = new Stack<>();
+       
+        // Initially enter the root into the stack 1  
+        if(root == null){ // when the given tree is empty, then return empty list 
+            return l;
+        }
+        st1.push(root); // initially, push the root of the tree into st 1
+        while(!st1.isEmpty()){
+            root = st1.pop(); // pop the root from st1 & add it to the list
+            // l.add(root.val); // for array list 
+            // adds an elem to the front of LL.so, we need not reverse it  
+            l.addFirst(root.val);
+            if(root.left != null){ 
+                st1.push(root.left);
+            }
+            if(root.right != null){
+                st1.push(root.right);
+            }
+        }
+
+        // now, as the elems will be in reverse order. so, reverse the list  
+        // Collections.reverse(l); this is for array list 
+
+
+        return l;
+    }
+}
